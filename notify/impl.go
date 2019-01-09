@@ -357,6 +357,12 @@ func (n *PagerDuty) notifyV2(
 	}
 	defer resp.Body.Close()
 
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return true, err
+	}
+	level.Debug(n.logger).Log("Response from PagerDuty", string(body))
+
 	return n.retryV2(resp)
 }
 
